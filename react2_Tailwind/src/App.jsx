@@ -63,8 +63,8 @@ function App() {
         min={6}
         max={100}
         value={length}
-         className='cursor-pointer'
-         onChange={(e) => {setLength(e.target.value)}}
+        className='cursor-pointer'
+        onChange={(e) => {setLength(e.target.value)}}
           />
           <label>Length: {length}</label>
       </div>

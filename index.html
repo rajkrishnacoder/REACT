@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input
+      id="input"
+      type="range"
+      min = "0"
+      max="100"
+      value="10"
+      onchange= "changeValue()"
+    />
+    <label id="label"></label>
+</body>
+<script>
+    const input = document.getElementById("input")
+    const display = document.getElementById("label")
+    
+    let me = input.value
+    display.innerHTML = "value: " + me
+    
+    function changeValue() {
+        me = input.value
+        display.innerHTML = "value:" + me
+    }
+</script>
+</html>
