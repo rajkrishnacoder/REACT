@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="myId">
+       <h1 class="name">name:</h1>
+       <button>delete</button>
+       <input onkeyup="change()" type="text"></input>
+       <button>submit</button>
+       <h2></h2>
+    </div>
+</body>
+<script>
+
+    const conect = document.querySelector('#myId')
+    const children = conect.children
+
+
+    const display = () =>{
+       const data = localStorage.getItem("key")
+       if(data) conect.children[0].innerHTML = data
+       else conect.children[0].innerHTML = "name:"
+    }
+    display()
+
+   const submitContent = ()=>{
+    if(!children[2].value == "") localStorage.setItem("key", children[2].value)
+    children[2].value = ""
+    display()
+    change()
+   }
+
+   const deleteContent = ()=>{
+    localStorage.removeItem("key")
+    display()
+   }
+
+    conect.addEventListener("click", (e) => {
+        const event = e.target
+        if(event.textContent == "delete")  deleteContent()
+        if(event.textContent== "submit") submitContent()
+    })
+    
+    function change(){
+        children[4].innerHTML = children[2].value
+    }
+
+</script>
+</html>
