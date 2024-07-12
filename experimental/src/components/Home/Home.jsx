@@ -1,12 +1,22 @@
-import React from 'react';
-import getTest from "../../context/test"
+import React, { useEffect } from 'react';
+import {useDispatch, useSelector} from "react-redux"
+import {addTodo} from "../../features/todo/todoSlice"
+
 
 function Home() {
-   const {username} = getTest()
+    
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+      dispatch(addTodo("my name is rajkrishna debnath"))  
+    }, [])
+    
+    const state = useSelector(state => state.todos)
+
     return (
         <div>
             <h1>hello this is home page</h1>
-            <p>{username}</p>
+            <p>{state[0]?.text}</p>
         </div>
     );
 }
