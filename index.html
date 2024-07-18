@@ -6,48 +6,34 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="myId">
-       <h1 class="name">name:</h1>
-       <button>delete</button>
-       <input onkeyup="change()" type="text"></input>
-       <button>submit</button>
-       <h2></h2>
-    </div>
+    <form id="form" onsubmit="hello(event)">
+        <input type="text" name="text1" value="foo" />
+        <input type="text" name="text2" value="bar" />
+        <input type="text" name="text2" value="baz" />
+        <input type="checkbox" name="check" checked disabled />
+        <button  value="save">Save</button>
+        <button name="intent" value="saveAsCopy">Save As Copy</button>
+      </form>
+      
 </body>
 <script>
+ const form = document.getElementById("form")
 
-    const conect = document.querySelector('#myId')
-    const children = conect.children
+//  form.addEventListener("submit", (e)=>{
+//     e.preventDefault()
+//     const data = new FormData(e.target)
+//     for(const [key, value] of data){
+//         console.log(key, value)
+//     }
+//  })
+ 
+const hello = (e)=>{
+    e.preventDefault()
+    const data = new FormData(e.target)
 
-
-    const display = () =>{
-       const data = localStorage.getItem("key")
-       if(data) conect.children[0].innerHTML = data
-       else conect.children[0].innerHTML = "name:"
+    for(const [key, value] of data){
+        console.log(key, value)
     }
-    display()
-
-   const submitContent = ()=>{
-    if(!children[2].value == "") localStorage.setItem("key", children[2].value)
-    children[2].value = ""
-    display()
-    change()
-   }
-
-   const deleteContent = ()=>{
-    localStorage.removeItem("key")
-    display()
-   }
-
-    conect.addEventListener("click", (e) => {
-        const event = e.target
-        if(event.textContent == "delete")  deleteContent()
-        if(event.textContent== "submit") submitContent()
-    })
-    
-    function change(){
-        children[4].innerHTML = children[2].value
-    }
-
+}
 </script>
 </html>
