@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import appwriteService from '../appwrite/conf'
 import { Container, PostCard } from '../components'
-<co></co>
+import {useSelector} from "react-redux"
 
 function Home(props) {
     const [posts, setPosts] = useState([])
+    const loginState = useSelector((state)=> state.auth.status)
 
     useEffect(()=>{
         appwriteService.getPost().then((posts)=>{
@@ -13,10 +14,10 @@ function Home(props) {
             }
         })
     }, [])
-    if(posts.length === 0){
+    if(!loginState){
         return (
             <div className="w-full py-8 mt-4 text-center">
-                {/* <Container> */}
+                <Container>
                     <div className="flex flex-wrap">
                         <div className="p-2 w-full">
                             <h1 className="text-2xl font-bold hover:text-gray-500">
@@ -24,13 +25,13 @@ function Home(props) {
                             </h1>
                         </div>
                     </div>
-                {/* </Container> */}
+                </Container>
             </div>
         )
     }
     return (
         <div className="w-full py-8">
-            {/* <Container> */}
+            <Container>
                 <div className='flex flex-wrap'>
                     {posts.map((post) => (
                         <div key={post.$id} className='p-2 w-1/4'>
@@ -38,7 +39,7 @@ function Home(props) {
                         </div>
                     ))}
                 </div>
-            {/* </Container> */}
+            </Container>
         </div>
     )
 }

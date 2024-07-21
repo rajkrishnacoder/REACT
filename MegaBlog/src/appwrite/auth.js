@@ -17,6 +17,7 @@ export class AuthServce {
     async createAccount({email, password, name}){
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name)
+
             if(userAccount){
                 //call another mehode
                 return this.login({email, password})
@@ -28,13 +29,15 @@ export class AuthServce {
         }
     }
 
-    async login({email, password}){
+    async login({ email, password }) {
         try {
-            return await this.account.createEmailSession(email, password);
+            return await this.account.createEmailPasswordSession(email, password);
         } catch (error) {
-            throw error
+            console.log("Login Error: ", error);
+            throw error;
         }
     }
+    
 
     async getCurrentUser(){
         try {

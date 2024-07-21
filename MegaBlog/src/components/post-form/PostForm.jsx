@@ -1,9 +1,12 @@
-import React, {useCallback, useEffect} from 'react';
-import { useForm } from 'react-hook-form';
+import React, {useCallback, useEffect, useState} from 'react';
+import { set, useForm } from 'react-hook-form';
 import {Button, Input, Select, RTE} from '../index'
 import appwriteServie from "../../appwrite/conf"
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
+import authService from '../../appwrite/auth';
+
+
 
 
 function PostForm({post}) {
@@ -11,20 +14,30 @@ function PostForm({post}) {
         defaultValues:{
            title: post?.title || "",
            slug: post?.slug || "",
-           content: psot?.content || "",
+           content: post?.content || "",
            status: post?.status || "active",
         }
     })
-
     const navigate = useNavigate()
-    const userData = useSelector(state => state.userData)
+    const [myData, setMe] = useState(null)
+
+
+    useEffect(()=>{
+    const data = authService.getCurrentUser()   
+    data.then((me)=> {
+        setMe(me.$id)
+    })   
+    }, [])
+    
+    // const userData = useSelector(state => state.auth.userData)
+
 
     const submit = async(data)=>{
         if(post){
             const file = data.image[0] ? appwriteServie.uploadFile(data.image[0]) : null
             
             if(file){
-                appwriteServie.dleeteFile(post.featuredImage)
+                appwriteServie.deleteFile(post.featuredImage)
             }
 
             const dbPost = await appwriteServie.updatePost(post.$id,{
@@ -42,7 +55,7 @@ function PostForm({post}) {
                 data.featuredImage = fileId
                 const dbPost = await appwriteServie.creatPost({
                     ...data,
-                    userId: userData.$id
+                    userId: myData //userData.$id
                 })
                 if(dbPost) navigate(`/post/${dbPost.$id}`)
                 
@@ -52,8 +65,10 @@ function PostForm({post}) {
 
     const slugTransform = useCallback((value)=>{
         if(value && typeof value === "string")
-        return value.trim().toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g, '-')
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-zA-Z\d\s]+/g, '-')
             .replace(/\s/g, '-')
         return ""
     }, [])
@@ -102,7 +117,7 @@ function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={appwriteServie.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
