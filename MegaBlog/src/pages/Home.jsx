@@ -8,7 +8,7 @@ function Home(props) {
     const loginState = useSelector((state)=> state.auth.status)
 
     useEffect(()=>{
-        appwriteService.getPost().then((posts)=>{
+        appwriteService.getPosts().then((posts)=>{
             if(posts){
                 setPosts(posts.documents)
             }

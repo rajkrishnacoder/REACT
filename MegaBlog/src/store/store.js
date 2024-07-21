@@ -6,6 +6,7 @@ const store = configureStore({
         auth: authSlice,
         //todo add more slicer for todo
     }
+        
 })
 
 export default store

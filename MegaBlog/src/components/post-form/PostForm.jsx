@@ -4,7 +4,7 @@ import {Button, Input, Select, RTE} from '../index'
 import appwriteServie from "../../appwrite/conf"
 import { useNavigate } from 'react-router-dom';
 import {  useSelector } from 'react-redux';
-import authService from '../../appwrite/auth';
+
 
 
 
@@ -19,20 +19,11 @@ function PostForm({post}) {
         }
     })
     const navigate = useNavigate()
-    const [myData, setMe] = useState(null)
 
-
-    useEffect(()=>{
-    const data = authService.getCurrentUser()   
-    data.then((me)=> {
-        setMe(me.$id)
-    })   
-    }, [])
-    
-    // const userData = useSelector(state => state.auth.userData)
-
+    const userData = useSelector(state => state.auth.userData)
 
     const submit = async(data)=>{
+
         if(post){
             const file = data.image[0] ? appwriteServie.uploadFile(data.image[0]) : null
             
@@ -53,10 +44,8 @@ function PostForm({post}) {
             if(file){
                 const fileId = file.$id
                 data.featuredImage = fileId
-                const dbPost = await appwriteServie.creatPost({
-                    ...data,
-                    userId: myData //userData.$id
-                })
+                const dbPost = await appwriteServie.createPost({ ...data, userId: userData.$id });
+
                 if(dbPost) navigate(`/post/${dbPost.$id}`)
                 
             }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, json, useNavigate} from 'react-router-dom'
+import {Link, json, useNavigate, useRouteLoaderData} from 'react-router-dom'
 import {login as authLogin} from '../store/authSlice'
 import {Button, Input, Logo} from "./index"
 import { useDispatch } from 'react-redux';
@@ -20,7 +20,7 @@ function Login() {
             const session = await authService.login(data)
             if(session){
                 const userData = await authService.getCurrentUser()
-                if(userData) dispatch(authLogin(userData))
+                if(userData) dispatch(authLogin({userData}))
                 navigate("/")
             }
 
@@ -28,6 +28,7 @@ function Login() {
             setError(error.message)
         }
     }
+
     return (
         <div
         className='flex items-center justify-center w-full'
